@@ -11,13 +11,16 @@ import "os"
 func main() {
 	app := cli.NewApp()
 	app.Name = "mock-device"
-	app.Usage = "simulate an IoT device"
+	app.Usage = "simulate a device taking and reporting various measurements"
+	app.Action = func(c *cli.Context) error {
+		e := emitters.ConstantEmitter{1.0, 1}
 
-	c := emitters.ConstantEmitter{1.0, 1}
+		for i := 0; i < 10; i++ {
+			fmt.Println(i, e.Emit())
+			time.Sleep(e.UseFreq())
+		}
 
-	for i := 0; i < 10; i++ {
-		fmt.Println(i, c.Emit())
-		time.Sleep(c.UseFreq())
+		return nil
 	}
 
 	app.Run(os.Args)
