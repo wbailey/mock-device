@@ -1,7 +1,7 @@
 package main
 
 import "fmt"
-import "github.com/wbailey/emitters"
+import "github.com/wbailey/sensors"
 import "github.com/urfave/cli"
 import "time"
 import "os"
@@ -13,11 +13,11 @@ func main() {
 	app.Name = "mock-device"
 	app.Usage = "simulate a device taking and reporting various measurements"
 	app.Action = func(c *cli.Context) error {
-		e := emitters.ConstantEmitter{1.0, 1}
+		s := sensors.ConstantSensor{1.0, 1}
 
 		for i := 0; i < 10; i++ {
-			fmt.Println(i, e.Emit())
-			time.Sleep(e.UseFreq())
+			fmt.Println(i, s.Measure())
+			time.Sleep(s.Frequency())
 		}
 
 		return nil
